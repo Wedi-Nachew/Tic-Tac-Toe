@@ -1,0 +1,36 @@
+body {
+    /* font-family: 'Lora', serif; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    row-gap: 70px;
+}
+h1{
+    font-size: 2.5rem;
+    /* font-style: italic; */
+}
+.game-board{
+    display: grid;
+    grid-template-columns: repeat(3, 90px)
+}
+.game-board > div{
+    height: 90px;
+    width: 90px;
+}
+.game-board > div:nth-child(-n + 6){
+    border-bottom: 2px solid gray
+}
+.game-board > div:nth-child(2),
+.game-board > div:nth-child(5),
+.game-board > div:nth-child(8){
+    border-right: 2px solid gray;
+    border-left: 2px solid gray;
+}
+
+.game-board > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.4rem;
+}

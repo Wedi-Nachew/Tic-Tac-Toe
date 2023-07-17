@@ -24,7 +24,7 @@ const GameBoard = (()=>{
            } else {
              false;
            }
-           console.log(markedX)
+           checkWinner()
         })
     }
     function getPlayerMark(event){
@@ -41,6 +41,21 @@ const GameBoard = (()=>{
        : markedO.push(event.target.dataset.index)
     }
    
+    function checkWinner(){
+        let sortX = markedX.sort((a,b) => (a > b) ? 1 : -1)
+        let sortY = markedO.sort((a,b) => (a > b) ? 1 : -1)
+        for(i of sortX){
+           if(+sortX[sortX.indexOf(i) - 2] + 2 == i && +sortX[sortX.indexOf(i) - 1] + 1 == i){
+                alert("X Won")
+           }
+        }
+        for(i of sortY){
+            if(+sortY[sortY.indexOf(i) - 2] + 2 == i && +sortY[sortY.indexOf(i) - 1] + 1 == i){
+                alert("O Won")
+            }
+         }
+    }
+
     renderContents()
     clickEvent()
     return{gameBoard, gameDisplay}

@@ -3,6 +3,8 @@ const GameBoard = (()=>{
     const gameBoard = ["", "", "", "", "", "", "", "", ""]
     const newArr = []
     let count = 1;
+    const markedX = []
+    const markedO = []
 
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
@@ -15,10 +17,15 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
+           if(!gameBoard[event.target.dataset.index]){
             getPlayerMark(event)
             renderContents()
+            position(event)
+           } else {
+             false;
+           }
+           console.log(markedX)
         })
-
     }
     function getPlayerMark(event){
         if(count % 2 !== 0){
@@ -29,21 +36,21 @@ const GameBoard = (()=>{
             count++
         }
     }
+    const position=(event)=>{
+       count % 2 === 0 ?  markedX.push(event.target.dataset.index)
+       : markedO.push(event.target.dataset.index)
+    }
    
     renderContents()
     clickEvent()
-
     return{gameBoard, gameDisplay}
 })();
 const Player = (mark)=>{
-    let count = 1;
     const setPlayerMark = (event)=>{
         while(GameBoard.gameDisplay.firstChild){
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)}
-        (!GameBoard.gameBoard[event.target.dataset.index]) ?
-        GameBoard.gameBoard[event.target.dataset.index] = mark : false 
+        GameBoard.gameBoard[event.target.dataset.index] = mark
     }
-
     return{setPlayerMark}
 
 }

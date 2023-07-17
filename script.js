@@ -46,11 +46,18 @@ const GameBoard = (()=>{
             let spots = marked[prop].sort()
             for(let spot of spots){
                 let i = spots.indexOf(spot)
-              if(((spot == 2 || spot == 5 || spot == 8) && 
-                    (+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot)) ||
-                 (+spots[i - 2] + 6 == spot && +spots[i - 1] + 3 == spot)){
-                 alert(`${prop} is the winner`)
-              } 
+              if((+spots[i - 1] == 4 && (+spots[i - 2] + 4 == spot && +spots[i - 1] + 2 == spot))||
+                 (+spots[i - 1] == 4 &&(+spots[i - 2] + 8 == spot && +spots[i - 1] + 4 == spot))){
+
+                    alert(`${prop} is the winner`)
+
+              }else if(((spot == 2 || spot == 5 || spot == 8) && 
+                        (+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot)) ||
+                        (+spots[i - 2] + 6 == spot && +spots[i - 1] + 3 == spot)){
+
+              alert(`${prop} is the winner`)
+
+        }
             }
         }
     }

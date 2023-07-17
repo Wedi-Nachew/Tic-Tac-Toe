@@ -3,8 +3,8 @@ const GameBoard = (()=>{
     const gameBoard = ["", "", "", "", "", "", "", "", ""]
     const newArr = []
     let count = 1;
-    const markedX = []
-    const markedO = []
+    const marked = {X: [], O: []}
+
 
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
@@ -37,25 +37,21 @@ const GameBoard = (()=>{
         }
     }
     const position=(event)=>{
-       count % 2 === 0 ?  markedX.push(event.target.dataset.index)
-       : markedO.push(event.target.dataset.index)
+       count % 2 === 0 ?  marked.X.push(event.target.dataset.index)
+       : marked.O.push(event.target.dataset.index)
     }
    
     function checkWinner(){
-        let sortX = markedX.sort((a,b) => (a > b) ? 1 : -1)
-        let sortY = markedO.sort((a,b) => (a > b) ? 1 : -1)
-        for(i of sortX){
-           if((+sortX[sortX.indexOf(i) - 2] + 2 == i && +sortX[sortX.indexOf(i) - 1] + 1 == i)||
-            (+sortX[sortX.indexOf(i) - 2] + 6 == i && +sortX[sortX.indexOf(i) - 1] + 3 == i)){
-                alert("X Won")
-           }
-        }
-        for(i of sortY){
-            if((+sortY[sortY.indexOf(i) - 2] + 2 == i && +sortY[sortY.indexOf(i) - 1] + 1 == i)||
-            (+sortY[sortY.indexOf(i) - 2] + 6 == i && +sortY[sortY.indexOf(i) - 1] + 3 == i)){
-                alert("O Won")
+        for(const prop in marked){
+            let spots = marked[prop].sort()
+            for(let spot of spots){
+                let i = spots.indexOf(spot)
+              if((+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot) ||
+                 (+spots[i - 2] + 6 == spot && +spots[i - 1] + 3 == spot)){
+                 alert("found a winner")
+              } 
             }
-         }
+        }
     }
 
     renderContents()
@@ -74,3 +70,7 @@ const Player = (mark)=>{
 
 const firstPlayer = Player("X")
 const secondPlayer = Player("O")
+
+const Game =()=>{
+
+}

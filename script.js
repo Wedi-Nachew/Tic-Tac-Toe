@@ -40,10 +40,9 @@ const Player = (mark)=>{
     const setPlayerMark = (event)=>{
         while(GameBoard.gameDisplay.firstChild){
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)}
-            GameBoard.gameBoard[event.target.dataset.index] = mark       
+        (!GameBoard.gameBoard[event.target.dataset.index]) ?
+        GameBoard.gameBoard[event.target.dataset.index] = mark : false 
     }
-
-
 
     return{setPlayerMark}
 

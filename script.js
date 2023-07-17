@@ -45,12 +45,14 @@ const GameBoard = (()=>{
         let sortX = markedX.sort((a,b) => (a > b) ? 1 : -1)
         let sortY = markedO.sort((a,b) => (a > b) ? 1 : -1)
         for(i of sortX){
-           if(+sortX[sortX.indexOf(i) - 2] + 2 == i && +sortX[sortX.indexOf(i) - 1] + 1 == i){
+           if((+sortX[sortX.indexOf(i) - 2] + 2 == i && +sortX[sortX.indexOf(i) - 1] + 1 == i)||
+            (+sortX[sortX.indexOf(i) - 2] + 6 == i && +sortX[sortX.indexOf(i) - 1] + 3 == i)){
                 alert("X Won")
            }
         }
         for(i of sortY){
-            if(+sortY[sortY.indexOf(i) - 2] + 2 == i && +sortY[sortY.indexOf(i) - 1] + 1 == i){
+            if((+sortY[sortY.indexOf(i) - 2] + 2 == i && +sortY[sortY.indexOf(i) - 1] + 1 == i)||
+            (+sortY[sortY.indexOf(i) - 2] + 6 == i && +sortY[sortY.indexOf(i) - 1] + 3 == i)){
                 alert("O Won")
             }
          }

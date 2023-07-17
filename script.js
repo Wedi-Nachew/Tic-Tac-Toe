@@ -48,7 +48,7 @@ const GameBoard = (()=>{
                 let i = spots.indexOf(spot)
               if((+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot) ||
                  (+spots[i - 2] + 6 == spot && +spots[i - 1] + 3 == spot)){
-                 alert("found a winner")
+                 alert(`${prop} is the winner`)
               } 
             }
         }

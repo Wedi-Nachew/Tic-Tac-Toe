@@ -4,6 +4,7 @@ const GameBoard = (()=>{
     const newArr = []
     let count = 1;
     const marked = {X: [], O: []}
+    let winner = null
 
 
     gameBoard.filter((item, index)=> newArr.push(index))
@@ -21,11 +22,10 @@ const GameBoard = (()=>{
             getPlayerMark(event)
             renderContents()
             position(event)
+            checkWinner()
            } else {
              false;
            }
-           console.log(marked)
-           checkWinner()
         })
     }
     function getPlayerMark(event){
@@ -49,27 +49,21 @@ const GameBoard = (()=>{
                 let i = spots.indexOf(spot)
                 if((+spots[i - 1] == 4 && (+spots[i - 2] + 4 == spot && +spots[i - 1] + 2 == spot))||
                  (+spots[i - 1] == 4 &&(+spots[i - 2] + 8 == spot && +spots[i - 1] + 4 == spot))){
-
-                    alert(`${prop} is the winner`)
-
+                    winner = prop
                 }else if(((spot == 2 || spot == 5 || spot == 8) && 
                         (+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot)) ||
                         (+spots[i - 2] + 6 == spot && +spots[i - 1] + 3 == spot)){
-
-                    alert(`${prop} is the winner`)
-
+                    winner = prop
                 }else if((spots[i-1] == 0 && spots[i+1] -  spots[i-1] == 4 && spots[i+2] - spots[i+1] == 4) ||
                          (spots[i-1] == 2 && spots[i+1] -  spots[i-1] == 2 && spots[i+2] - spots[i+1] == 2) ||
                          (spots[i+1] - spots[i-1] == 3 && spots[i+2] - spots[i+1] == 3)){
-
                     spots.splice(i, 1)
-                    
                 }else if((spots[i-1] == 0 && spots[i] -  spots[i-1] == 4 && spots[i+2] - spots[i] == 4) || 
                          (spots[i-1] == 2 && spots[i] -  spots[i-1] == 2 && spots[i+2] - spots[i] == 2) ||
                          (spots[i] - spots[i-1] == 3 && spots[i+2] - spots[i] == 3)){
-
                     spots.splice(i + 1, 1)
-
+                }else if(!winner && gameBoard.every(item => Boolean(item) == true)) {
+                    winner = "tie"
                 }
             }
         }

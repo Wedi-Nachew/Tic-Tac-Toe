@@ -6,7 +6,6 @@ const GameBoard = (()=>{
     const marked = {X: [], O: []}
     let winner = null
 
-
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
         for(let i=0; i< gameBoard.length; i++){
@@ -18,13 +17,14 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-           if(!gameBoard[event.target.dataset.index]){
-            getPlayerMark(event)
-            renderContents()
-            position(event)
-            checkWinner()
-           } else {
-             false;
+           if(!gameBoard[event.target.dataset.index] && !winner){
+                getPlayerMark(event)
+                renderContents()
+                position(event)
+                checkWinner()
+                Game.announceWinner(winner)
+           }else if(winner) {
+                false;
            }
         })
     }
@@ -41,14 +41,13 @@ const GameBoard = (()=>{
        count % 2 === 0 ?  marked.X.push(event.target.dataset.index)
        : marked.O.push(event.target.dataset.index)
     }
-   
     function checkWinner(){
         for(const prop in marked){
             let spots = marked[prop].sort()
             for(let spot of spots){
                 let i = spots.indexOf(spot)
                 if((+spots[i - 1] == 4 && (+spots[i - 2] + 4 == spot && +spots[i - 1] + 2 == spot))||
-                 (+spots[i - 1] == 4 &&(+spots[i - 2] + 8 == spot && +spots[i - 1] + 4 == spot))){
+                   (+spots[i - 1] == 4 &&(+spots[i - 2] + 8 == spot && +spots[i - 1] + 4 == spot))){
                     winner = prop
                 }else if(((spot == 2 || spot == 5 || spot == 8) && 
                         (+spots[i - 2] + 2 == spot && +spots[i - 1] + 1 == spot)) ||
@@ -67,11 +66,12 @@ const GameBoard = (()=>{
                 }
             }
         }
+        return winner;
     }
 
     renderContents()
     clickEvent()
-    return{gameBoard, gameDisplay}
+    return{gameBoard, gameDisplay, renderContents}
 })();
 const Player = (mark)=>{
     const setPlayerMark = (event)=>{
@@ -86,6 +86,21 @@ const Player = (mark)=>{
 const firstPlayer = Player("X")
 const secondPlayer = Player("O")
 
-const Game =()=>{
+const Game = (()=>{
+    const announceWinner = (won)=>{
+        if(won == "X"){
+            console.log(won)
+            GameBoard.gameBoard = []
+        }else if(won == "O"){
+            console.log(won)
+            GameBoard.gameBoard = []
+        }else if(won){
+            console.log("tie")
+        }
+    }
 
-}
+
+
+    return {announceWinner}
+})()
+console.log(Game.announceWinner)

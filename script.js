@@ -87,15 +87,11 @@ const firstPlayer = Player("X")
 const secondPlayer = Player("O")
 
 const Game = (()=>{
+    const winnerMark = document.querySelector(".notify h1")
     const announceWinner = (won)=>{
-        if(won == "X"){
-            console.log(won)
-            GameBoard.gameBoard = []
-        }else if(won == "O"){
-            console.log(won)
-            GameBoard.gameBoard = []
-        }else if(won){
-            console.log("tie")
+        if(won){
+            winnerMark.textContent  = won
+            GameBoard.gameBoard = ["", "", "", "", "", "", "", "", ""]
         }
     }
 

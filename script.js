@@ -71,32 +71,45 @@ const GameBoard = (()=>{
 
     renderContents()
     clickEvent()
-    return{gameBoard, gameDisplay, renderContents}
+    return{gameBoard, gameDisplay, checkWinner}
 })();
 const Player = (mark)=>{
+    let playerMark = mark
     const setPlayerMark = (event)=>{
         while(GameBoard.gameDisplay.firstChild){
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)}
         GameBoard.gameBoard[event.target.dataset.index] = mark
     }
-    return{setPlayerMark}
+    return{setPlayerMark, playerMark}
 
 }
 
 const firstPlayer = Player("X")
 const secondPlayer = Player("O")
+console.log(firstPlayer.playerMark)
 
 const Game = (()=>{
-    const winnerMark = document.querySelector(".notify h1")
+    let winner = GameBoard.checkWinner()
+    const winnerMark = document.querySelector("#notify h1")
+    const notification = document.querySelector("#notify")
+
     const announceWinner = (won)=>{
         if(won){
             winnerMark.textContent  = won
             GameBoard.gameBoard = ["", "", "", "", "", "", "", "", ""]
+            notification.className = "show"
+        } else if(!won){
+            notification.className = "hide"
         }
     }
-
-
-
+    const clickEvents = ()=>{
+        notification.addEventListener("click", (event)=>{
+            winner = null
+            announceWinner(winner)
+        })
+    }
+    announceWinner(winner)
+    clickEvents()
     return {announceWinner}
 })()
-console.log(Game.announceWinner)
+

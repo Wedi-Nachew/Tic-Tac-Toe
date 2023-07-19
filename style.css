@@ -70,3 +70,14 @@ h1{
 .hide{
     visibility: hidden;
 }
+
+button {
+    width: 20%;
+    height: 10%;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0 0 5px rgb(0, 18, 25);
+    cursor: pointer;
+}

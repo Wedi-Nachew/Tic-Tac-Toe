@@ -1,14 +1,15 @@
 const GameBoard = (()=>{
     const gameDisplay = document.querySelector(".game-board")
-    const gameBoard = ["", "", "", "", "", "", "", "", ""]
-    const newArr = []
+    let gameBoard = ["", "", "", "", "", "", "", "", ""]
+    let newArr = []
     let count = 1;
-    const marked = {X: [], O: []}
-    let winner = null
+    let marked = {X: [], O: []}
+    let winner = 0
+    round = 0;
 
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
-        for(let i=0; i< gameBoard.length; i++){
+        for(let i=0; i < gameBoard.length; i++){
             const mark = document.createElement("div")
             mark.setAttribute("data-index", newArr[i])
             mark.textContent = gameBoard[i]; 
@@ -17,15 +18,23 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-           if(!gameBoard[event.target.dataset.index] && !winner){
+            /*if(!gameBoard[event.target.dataset.index] && winner){
+                setWinner(0)
                 getPlayerMark(event)
                 renderContents()
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
-           }else if(winner) {
+           }else */if(!gameBoard[event.target.dataset.index] && !winner){
+                getPlayerMark(event)
+                renderContents()
+                position(event)
+                checkWinner()
+                Game.announceWinner(winner)
+           }else{
                 false;
            }
+           console.log(gameBoard)
         })
     }
     function getPlayerMark(event){
@@ -38,8 +47,9 @@ const GameBoard = (()=>{
         }
     }
     const position=(event)=>{
-       count % 2 === 0 ?  marked.X.push(event.target.dataset.index)
-       : marked.O.push(event.target.dataset.index)
+       if(gameBoard.some(item => Boolean(item)== true)){
+        (count % 2 === 0) ?  marked.X.push(event.target.dataset.index)
+       : marked.O.push(event.target.dataset.index)}
     }
     function checkWinner(){
         for(const prop in marked){
@@ -67,49 +77,91 @@ const GameBoard = (()=>{
             }
         }
         return winner;
+        
     }
-
+ 
+    const setWinner=(num)=> winner = num
+    const getWinner=()=> winner
+    const setRound=(num)=> round = num
+    const getRound=()=> round
+    const setGameBoardSpots = (spot)=>{
+        for(let i=0; i < gameBoard.length; i++){gameBoard[i] = spot}
+    }
+    const getGameBoardSpots =()=> gameBoard
+   
     renderContents()
     clickEvent()
-    return{gameBoard, gameDisplay, checkWinner}
+
+
+    return  {
+                getGameBoardSpots, setGameBoardSpots, gameDisplay, 
+                checkWinner, renderContents, setRound, setWinner,
+                getWinner,getRound
+            }
 })();
 const Player = (mark)=>{
     let playerMark = mark
-    const setPlayerMark = (event)=>{
+    const setPlayerMark = (event) =>{
         while(GameBoard.gameDisplay.firstChild){
-            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)}
-        GameBoard.gameBoard[event.target.dataset.index] = mark
+            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
+        }
+        GameBoard.getGameBoardSpots()[event.target.dataset.index] = mark
+        console.log(GameBoard.getGameBoardSpots())
     }
+
+  
     return{setPlayerMark, playerMark}
 
 }
 
-const firstPlayer = Player("X")
-const secondPlayer = Player("O")
-console.log(firstPlayer.playerMark)
+
+
 
 const Game = (()=>{
-    let winner = GameBoard.checkWinner()
     const winnerMark = document.querySelector("#notify h1")
     const notification = document.querySelector("#notify")
 
     const announceWinner = (won)=>{
-        if(won){
-            winnerMark.textContent  = won
-            GameBoard.gameBoard = ["", "", "", "", "", "", "", "", ""]
-            notification.className = "show"
-        } else if(!won){
+        if(!won){
             notification.className = "hide"
+        }else{
+            winnerMark.textContent  = won
+            notification.className = "show"
+            console.log(`are u kidddiiing`)
         }
+        // notification.className = "hide"
     }
-    const clickEvents = ()=>{
+    const clickEvents = (event)=>{
         notification.addEventListener("click", (event)=>{
-            winner = null
-            announceWinner(winner)
+            if(event.target.nodeName == "BUTTON"){
+                replay()
+                // GameBoard.setWinner(0)
+                notification.className = "hide"
+            } else {
+                notification.className = "hide"
+            }
+            console.log(GameBoard.getWinner())
         })
     }
-    announceWinner(winner)
+    function replay(){
+        while(GameBoard.gameDisplay.firstChild){
+            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
+        }
+        GameBoard.setGameBoardSpots("")
+        GameBoard.setWinner(0)
+        GameBoard.renderContents()
+        GameBoard.setRound(0)
+        // notification.className = "hide"
+        // console.log(GameBoard.getRound())
+        // announceWinner(GameBoard.getWinner())
+    }
+
+    announceWinner(GameBoard.getWinner())
     clickEvents()
     return {announceWinner}
 })()
 
+
+
+const firstPlayer = Player("X")
+const secondPlayer = Player("O")

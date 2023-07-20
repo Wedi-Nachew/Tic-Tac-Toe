@@ -18,14 +18,7 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-            /*if(!gameBoard[event.target.dataset.index] && winner){
-                setWinner(0)
-                getPlayerMark(event)
-                renderContents()
-                position(event)
-                checkWinner()
-                Game.announceWinner(winner)
-           }else */if(!gameBoard[event.target.dataset.index] && !winner){
+            if(!gameBoard[event.target.dataset.index] && !winner){
                 getPlayerMark(event)
                 renderContents()
                 position(event)
@@ -35,6 +28,7 @@ const GameBoard = (()=>{
                 false;
            }
            console.log(gameBoard)
+           console.log(marked)
         })
     }
     function getPlayerMark(event){
@@ -87,16 +81,22 @@ const GameBoard = (()=>{
     const setGameBoardSpots = (spot)=>{
         for(let i=0; i < gameBoard.length; i++){gameBoard[i] = spot}
     }
+    const getMarkedSpots=()=> marked
+    const resetMarkedSpots=()=> {
+        for(prop in marked){
+            marked[prop] = []
+        }
+    }
     const getGameBoardSpots =()=> gameBoard
    
     renderContents()
     clickEvent()
-
+   
 
     return  {
                 getGameBoardSpots, setGameBoardSpots, gameDisplay, 
-                checkWinner, renderContents, setRound, setWinner,
-                getWinner,getRound
+                renderContents, setWinner,
+                getWinner,resetMarkedSpots
             }
 })();
 const Player = (mark)=>{
@@ -106,10 +106,7 @@ const Player = (mark)=>{
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
         }
         GameBoard.getGameBoardSpots()[event.target.dataset.index] = mark
-        console.log(GameBoard.getGameBoardSpots())
     }
-
-  
     return{setPlayerMark, playerMark}
 
 }
@@ -127,15 +124,12 @@ const Game = (()=>{
         }else{
             winnerMark.textContent  = won
             notification.className = "show"
-            console.log(`are u kidddiiing`)
         }
-        // notification.className = "hide"
     }
     const clickEvents = (event)=>{
         notification.addEventListener("click", (event)=>{
             if(event.target.nodeName == "BUTTON"){
                 replay()
-                // GameBoard.setWinner(0)
                 notification.className = "hide"
             } else {
                 notification.className = "hide"
@@ -150,10 +144,7 @@ const Game = (()=>{
         GameBoard.setGameBoardSpots("")
         GameBoard.setWinner(0)
         GameBoard.renderContents()
-        GameBoard.setRound(0)
-        // notification.className = "hide"
-        // console.log(GameBoard.getRound())
-        // announceWinner(GameBoard.getWinner())
+        GameBoard.resetMarkedSpots()
     }
 
     announceWinner(GameBoard.getWinner())

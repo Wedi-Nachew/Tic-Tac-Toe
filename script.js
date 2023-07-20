@@ -5,7 +5,6 @@ const GameBoard = (()=>{
     let count = 1;
     let marked = {X: [], O: []}
     let winner = 0
-    round = 0;
 
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
@@ -27,8 +26,6 @@ const GameBoard = (()=>{
            }else{
                 false;
            }
-           console.log(gameBoard)
-           console.log(marked)
         })
     }
     function getPlayerMark(event){
@@ -76,8 +73,7 @@ const GameBoard = (()=>{
  
     const setWinner=(num)=> winner = num
     const getWinner=()=> winner
-    const setRound=(num)=> round = num
-    const getRound=()=> round
+    const setCount=(num)=> count = num
     const setGameBoardSpots = (spot)=>{
         for(let i=0; i < gameBoard.length; i++){gameBoard[i] = spot}
     }
@@ -94,11 +90,11 @@ const GameBoard = (()=>{
    
 
     return  {
-                getGameBoardSpots, setGameBoardSpots, gameDisplay, 
-                renderContents, setWinner,
-                getWinner,resetMarkedSpots
+                getGameBoardSpots, setGameBoardSpots, gameDisplay,setCount, 
+                renderContents, setWinner,getWinner,resetMarkedSpots
             }
 })();
+
 const Player = (mark)=>{
     let playerMark = mark
     const setPlayerMark = (event) =>{
@@ -134,7 +130,6 @@ const Game = (()=>{
             } else {
                 notification.className = "hide"
             }
-            console.log(GameBoard.getWinner())
         })
     }
     function replay(){
@@ -145,6 +140,7 @@ const Game = (()=>{
         GameBoard.setWinner(0)
         GameBoard.renderContents()
         GameBoard.resetMarkedSpots()
+        GameBoard.setCount(1)
     }
 
     announceWinner(GameBoard.getWinner())

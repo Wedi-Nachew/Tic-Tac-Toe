@@ -204,7 +204,15 @@ const Ai = (()=>{
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
             }
             setAiSpot()
-            GameBoard.getGameBoardSpots()[getAispot()] = "O"
+            for(let i=0; i < 9; i++){
+                if(GameBoard.getGameBoardSpots()[getAispot()]){
+                    setAiSpot()
+                    console.log("stop right there..") 
+                } else if(!GameBoard.getGameBoardSpots()[getAispot()]){
+                    GameBoard.getGameBoardSpots()[getAispot()] = "O"
+                    break;
+                }
+            }
     }
 
     clickEvent()

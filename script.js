@@ -111,8 +111,9 @@ const Player = (mark)=>{
 
 
 const Game = (()=>{
-    const winnerMark = document.querySelector("#notify h1")
     const notification = document.querySelector("#notify")
+    const winnerMark = notification.querySelector("h1")
+    const restart = document.querySelector("#notify ~ button")
 
     const announceWinner = (won)=>{
         if(!won){
@@ -123,13 +124,20 @@ const Game = (()=>{
         }
     }
     const clickEvents = (event)=>{
+
         notification.addEventListener("click", (event)=>{
             if(event.target.nodeName == "BUTTON"){
                 replay()
                 notification.className = "hide"
             } else {
                 notification.className = "hide"
+                restart.textContent = "Play Again"
             }
+        })
+        
+        restart.addEventListener("click", (event)=>{
+            event.target.textContent = "Restart"
+            replay()
         })
     }
     function replay(){

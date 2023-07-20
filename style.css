@@ -5,17 +5,19 @@ body {
     flex-direction: column;
     box-sizing: border-box;
     row-gap: 20px;
-    background-color: #001e03
+    background-color: #001e03;
 }
 h1{
-    font-size: 3.5rem;
+    font-size: 3.3rem;
     color: #fff;
+    margin: 10px  auto 20px auto;
 }
 .game-board{
     display: grid;
     grid-template-columns: repeat(3, 130px);
     border: none;
     box-shadow: 0 0 10px #001e03;
+    margin-bottom: 20px;;
 }
 .game-board > div{
     height: 130px;
@@ -72,12 +74,20 @@ h1{
 }
 
 button {
-    width: 20%;
+    width: 25%;
     height: 10%;
     font-size: 1.6rem;
-    font-weight: 500;
-    border-radius: 25px;
+    font-weight: 600;
+    border-radius: 15px;
     border: none;
     box-shadow: 0 0 5px rgb(0, 18, 25);
     cursor: pointer;
+    background-color: #f7bc27;
+    color: #000000
+}
+.game-board ~ button{
+    background-color: #ff7900;
+    color: #001e03;
+    height: 50px;
+    box-shadow: 0 0 5px rgb(52, 52, 52);
 }

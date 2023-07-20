@@ -1,5 +1,21 @@
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-Medium.woff) format(woff);
+    font-weight: 500;
+}
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-SemiBold.woff) format(woff);
+    font-weight: 600;
+}
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-Bold.woff) format(woff);
+    font-weight: 700;
+}
+
 body {
-    /* font-family: 'Lora', serif; */
+    font-family: 'Lora', serif;
     display: flex;
     align-items: center;
     flex-direction: column;

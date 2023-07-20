@@ -17,6 +17,7 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
+            console.log(marked)
             if(Ai.getMode() && !winner){
                 getPlayerMark(event)
                 getAiMark(event)
@@ -24,7 +25,6 @@ const GameBoard = (()=>{
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
-                // console.log(marked)
             }else if(!gameBoard[event.target.dataset.index] && !winner && !Ai.getMode()){
                 getPlayerMark(event)
                 renderContents()
@@ -53,7 +53,10 @@ const GameBoard = (()=>{
 
     
     const position=(event)=>{
-       if(Ai.getMode() && !winner){
+        console.log(winner)
+        if(winner){
+            return;
+        }else if(Ai.getMode() && !winner){
             marked.X.push(event.target.dataset.index)
             marked.O.push(Ai.getAispot())
         }else if(!Ai.getMode() && (count % 2 === 0)){
@@ -189,7 +192,7 @@ const secondPlayer = Player("O")
 const Ai = (()=>{
     const ai = document.querySelector(".ai")
     let mode = 0;
-    let aiSpot= null;
+    let aiSpot= "";
 
     const getAispot=()=> aiSpot
     const setAiSpot=()=> {
@@ -206,17 +209,16 @@ const Ai = (()=>{
     })} 
 
     const setAIMark=(event)=>{
-        
+        while(GameBoard.gameDisplay.firstChild){
+            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
+        }
         GameBoard.position(event)
         GameBoard.checkWinner()
         if(GameBoard.checkWinner()){
             return;
         }else{
-            while(GameBoard.gameDisplay.firstChild){
-                GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
-            }
-            for(let i=0; i < 9; i++){
-                setAiSpot()
+            setAiSpot()
+            for(let i=0; i < GameBoard.getGameBoardSpots.length; i++){
                 if(GameBoard.getGameBoardSpots()[getAispot()]){
                     setAiSpot()
                 } else if(!GameBoard.getGameBoardSpots()[getAispot()]){

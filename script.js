@@ -19,12 +19,13 @@ const GameBoard = (()=>{
         gameDisplay.addEventListener("click", (event)=>{
             if(Ai.getMode() && !winner){
                 getPlayerMark(event)
-                getAiMark()
+                getAiMark(event)
                 renderContents()
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
-            }else if(!gameBoard[event.target.dataset.index] && !winner){
+                // console.log(marked)
+            }else if(!gameBoard[event.target.dataset.index] && !winner && !Ai.getMode()){
                 getPlayerMark(event)
                 renderContents()
                 position(event)
@@ -45,19 +46,21 @@ const GameBoard = (()=>{
         } 
     }
 
-    function getAiMark(){
-        if(Ai.getMode() && count % 2=== 0){
-            Ai.setAIMark()
+    function getAiMark(event){
+            Ai.setAIMark(event)
             count++
-        }
     }
+
+    
     const position=(event)=>{
-       if(Ai.getMode()){
+       if(Ai.getMode() && !winner){
             marked.X.push(event.target.dataset.index)
             marked.O.push(Ai.getAispot())
-        }else if(gameBoard.some(item => Boolean(item)== true)){
-        (count % 2 === 0) ?  marked.X.push(event.target.dataset.index)
-       : marked.O.push(event.target.dataset.index)}
+        }else if(!Ai.getMode() && (count % 2 === 0)){
+            marked.X.push(event.target.dataset.index)
+        }else if(!Ai.getMode() && (count % 2 !== 0)){
+            marked.O.push(event.target.dataset.index)
+        }
     }
     function checkWinner(){
         for(const prop in marked){
@@ -107,8 +110,8 @@ const GameBoard = (()=>{
    
 
     return  {
-                getGameBoardSpots, setGameBoardSpots, gameDisplay,setCount, 
-                renderContents, setWinner,getWinner,resetMarkedSpots
+                getGameBoardSpots, setGameBoardSpots, gameDisplay,setCount, getMarkedSpots,
+                renderContents, setWinner,getWinner,resetMarkedSpots, position, checkWinner, marked
             }
 })();
 
@@ -189,7 +192,11 @@ const Ai = (()=>{
     let aiSpot= null;
 
     const getAispot=()=> aiSpot
-    const setAiSpot=()=> aiSpot = ~~(Math.random()*9)
+    const setAiSpot=()=> {
+        aiSpot = ~~(Math.random()*9)
+        const emptySpots = GameBoard.getGameBoardSpots().filter((spot, index)=> index)
+       return emptySpots
+    }
     const getMode =()=> mode
     const setAimode = ()=> mode = "ai"
 
@@ -198,21 +205,26 @@ const Ai = (()=>{
             setAimode()
     })} 
 
-    const setAIMark=()=>{
-            
+    const setAIMark=(event)=>{
+        
+        GameBoard.position(event)
+        GameBoard.checkWinner()
+        if(GameBoard.checkWinner()){
+            return;
+        }else{
             while(GameBoard.gameDisplay.firstChild){
-            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
+                GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
             }
-            setAiSpot()
             for(let i=0; i < 9; i++){
+                setAiSpot()
                 if(GameBoard.getGameBoardSpots()[getAispot()]){
                     setAiSpot()
-                    console.log("stop right there..") 
                 } else if(!GameBoard.getGameBoardSpots()[getAispot()]){
                     GameBoard.getGameBoardSpots()[getAispot()] = "O"
                     break;
                 }
             }
+        }
     }
 
     clickEvent()

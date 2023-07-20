@@ -17,7 +17,14 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-            if(!gameBoard[event.target.dataset.index] && !winner){
+            if(Ai.getMode() && !winner){
+                getPlayerMark(event)
+                getAiMark()
+                renderContents()
+                position(event)
+                checkWinner()
+                Game.announceWinner(winner)
+            }else if(!gameBoard[event.target.dataset.index] && !winner){
                 getPlayerMark(event)
                 renderContents()
                 position(event)
@@ -29,16 +36,26 @@ const GameBoard = (()=>{
         })
     }
     function getPlayerMark(event){
-        if(count % 2 !== 0){
+         if(count % 2 !== 0){
             firstPlayer.setPlayerMark(event)
             count++
         } else if(count % 2 === 0){
             secondPlayer.setPlayerMark(event)
             count++
+        } 
+    }
+
+    function getAiMark(){
+        if(Ai.getMode() && count % 2=== 0){
+            Ai.setAIMark()
+            count++
         }
     }
     const position=(event)=>{
-       if(gameBoard.some(item => Boolean(item)== true)){
+       if(Ai.getMode()){
+            marked.X.push(event.target.dataset.index)
+            marked.O.push(Ai.getAispot())
+        }else if(gameBoard.some(item => Boolean(item)== true)){
         (count % 2 === 0) ?  marked.X.push(event.target.dataset.index)
        : marked.O.push(event.target.dataset.index)}
     }
@@ -97,12 +114,16 @@ const GameBoard = (()=>{
 
 const Player = (mark)=>{
     let playerMark = mark
+
     const setPlayerMark = (event) =>{
         while(GameBoard.gameDisplay.firstChild){
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
         }
         GameBoard.getGameBoardSpots()[event.target.dataset.index] = mark
     }
+
+   
+
     return{setPlayerMark, playerMark}
 
 }
@@ -151,6 +172,7 @@ const Game = (()=>{
         GameBoard.setCount(1)
     }
 
+
     announceWinner(GameBoard.getWinner())
     clickEvents()
     return {announceWinner}
@@ -160,3 +182,33 @@ const Game = (()=>{
 
 const firstPlayer = Player("X")
 const secondPlayer = Player("O")
+
+const Ai = (()=>{
+    const ai = document.querySelector(".ai")
+    let mode = 0;
+    let aiSpot= null;
+
+    const getAispot=()=> aiSpot
+    const setAiSpot=()=> aiSpot = ~~(Math.random()*9)
+    const getMode =()=> mode
+    const setAimode = ()=> mode = "ai"
+
+    const clickEvent= ()=>{
+        ai.addEventListener("click", ()=>{
+            setAimode()
+    })} 
+
+    const setAIMark=()=>{
+            
+            while(GameBoard.gameDisplay.firstChild){
+            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
+            }
+            setAiSpot()
+            GameBoard.getGameBoardSpots()[getAispot()] = "O"
+    }
+
+    clickEvent()
+    return{setAIMark, getMode, getAispot}
+})()
+
+

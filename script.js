@@ -5,7 +5,8 @@ const GameBoard = (()=>{
     let count = 1;
     let marked = {X: [], O: []}
     let winner = 0
-
+    let callAgain = 0;
+    const emptySpots = []
     gameBoard.filter((item, index)=> newArr.push(index))
     const renderContents = ()=>{
         for(let i=0; i < gameBoard.length; i++){
@@ -17,7 +18,6 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-            console.log(marked)
             if(Ai.getMode() && !winner){
                 getPlayerMark(event)
                 getAiMark(event)
@@ -25,6 +25,7 @@ const GameBoard = (()=>{
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
+                console.log(marked)
             }else if(!gameBoard[event.target.dataset.index] && !winner && !Ai.getMode()){
                 getPlayerMark(event)
                 renderContents()
@@ -37,13 +38,17 @@ const GameBoard = (()=>{
         })
     }
     function getPlayerMark(event){
-         if(count % 2 !== 0){
+        position(event)
+        checkWinner()
+        callAgain = 1;
+        if(count % 2 !== 0){
             firstPlayer.setPlayerMark(event)
             count++
         } else if(count % 2 === 0){
             secondPlayer.setPlayerMark(event)
             count++
         } 
+       
     }
 
     function getAiMark(event){
@@ -51,19 +56,22 @@ const GameBoard = (()=>{
             count++
     }
 
-    
     const position=(event)=>{
-        console.log(winner)
-        if(winner){
-            return;
-        }else if(Ai.getMode() && !winner){
-            marked.X.push(event.target.dataset.index)
-            marked.O.push(Ai.getAispot())
-        }else if(!Ai.getMode() && (count % 2 === 0)){
-            marked.X.push(event.target.dataset.index)
-        }else if(!Ai.getMode() && (count % 2 !== 0)){
-            marked.O.push(event.target.dataset.index)
+        if(!callAgain){
+            if(Ai.getMode()){
+                marked.X.push(event.target.dataset.index)
+                Ai.setAiSpot()
+                marked.O.push(Ai.getAiSpot())
+            }else if(!Ai.getMode() && (count % 2 === 0)){
+                marked.X.push(event.target.dataset.index)
+            }else if(!Ai.getMode() && (count % 2 !== 0)){
+                marked.O.push(event.target.dataset.index)
+            }
+        } else if(callAgain){
+            callAgain = 0;
+            return
         }
+        
     }
     function checkWinner(){
         for(const prop in marked){
@@ -110,11 +118,11 @@ const GameBoard = (()=>{
    
     renderContents()
     clickEvent()
-   
+   console.log(position.get)
 
     return  {
                 getGameBoardSpots, setGameBoardSpots, gameDisplay,setCount, getMarkedSpots,
-                renderContents, setWinner,getWinner,resetMarkedSpots, position, checkWinner, marked
+                renderContents, setWinner,getWinner,resetMarkedSpots, position, checkWinner, marked,
             }
 })();
 
@@ -192,14 +200,23 @@ const secondPlayer = Player("O")
 const Ai = (()=>{
     const ai = document.querySelector(".ai")
     let mode = 0;
-    let aiSpot= "";
-
-    const getAispot=()=> aiSpot
+    let AiSpot = ""
     const setAiSpot=()=> {
-        aiSpot = ~~(Math.random()*9)
-        const emptySpots = GameBoard.getGameBoardSpots().filter((spot, index)=> index)
-       return emptySpots
+        const allPossibleSpots=[0,1,2,3,4,5,6,7,8]
+        for(let marks in GameBoard.getMarkedSpots()){
+            for(let spot of GameBoard.getMarkedSpots()[marks]){
+                for(let i=0; i < allPossibleSpots.length; i++){
+                    if(allPossibleSpots[i] == +spot){
+                        allPossibleSpots.splice(i , 1)
+                    }else {
+                        continue;
+                    }
+                }
+            }
+        }
+        AiSpot = allPossibleSpots[~~(Math.random() * allPossibleSpots.length)]
     }
+    const getAiSpot=()=> AiSpot
     const getMode =()=> mode
     const setAimode = ()=> mode = "ai"
 
@@ -209,28 +226,18 @@ const Ai = (()=>{
     })} 
 
     const setAIMark=(event)=>{
-        while(GameBoard.gameDisplay.firstChild){
-            GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
-        }
-        GameBoard.position(event)
-        GameBoard.checkWinner()
         if(GameBoard.checkWinner()){
-            return;
+            return
         }else{
-            setAiSpot()
-            for(let i=0; i < GameBoard.getGameBoardSpots.length; i++){
-                if(GameBoard.getGameBoardSpots()[getAispot()]){
-                    setAiSpot()
-                } else if(!GameBoard.getGameBoardSpots()[getAispot()]){
-                    GameBoard.getGameBoardSpots()[getAispot()] = "O"
-                    break;
-                }
+            while(GameBoard.gameDisplay.firstChild){
+                GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
             }
+            GameBoard.getGameBoardSpots()[getAiSpot()] = "O"
         }
     }
 
     clickEvent()
-    return{setAIMark, getMode, getAispot}
+    return{setAIMark, getMode, setAiSpot, getAiSpot}
 })()
 
 

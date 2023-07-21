@@ -1,0 +1,54 @@
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-Medium.woff) format(woff);
+    font-weight: 500;
+}
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-SemiBold.woff) format(woff);
+    font-weight: 600;
+}
+@font-face{
+    font-family: 'Lora';
+    src: url(Fonts/Lora-Bold.woff) format(woff);
+    font-weight: 700;
+}
+body{
+    font-family: 'Lora', serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #001e03;
+    color: white;
+}
+
+h1{
+    font-size: 5rem;
+}
+
+button{
+    width: 30%;
+    height: 25%;
+    background-color:  #ffb700; /* #005ce6;*/
+    border: none;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    /* box-shadow: 0 0 10px #000; */
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+button:hover{
+    background-color: #f7bc27;
+    box-shadow: 0 0 15px #000;
+}
+svg{
+    fill: #000;
+    height: 50px;
+}

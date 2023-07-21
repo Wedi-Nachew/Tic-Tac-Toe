@@ -6,8 +6,9 @@ const GameBoard = (()=>{
     let marked = {X: [], O: []}
     let winner = 0
     let callAgain = 0;
-    const emptySpots = []
+
     gameBoard.filter((item, index)=> newArr.push(index))
+
     const renderContents = ()=>{
         for(let i=0; i < gameBoard.length; i++){
             const mark = document.createElement("div")
@@ -25,7 +26,6 @@ const GameBoard = (()=>{
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
-                console.log(marked)
             }else if(!gameBoard[event.target.dataset.index] && !winner && !Ai.getMode()){
                 getPlayerMark(event)
                 renderContents()
@@ -37,34 +37,16 @@ const GameBoard = (()=>{
            }
         })
     }
-    function getPlayerMark(event){
-        position(event)
-        checkWinner()
-        callAgain = 1;
-        if(count % 2 !== 0){
-            firstPlayer.setPlayerMark(event)
-            count++
-        } else if(count % 2 === 0){
-            secondPlayer.setPlayerMark(event)
-            count++
-        } 
-       
-    }
-
-    function getAiMark(event){
-            Ai.setAIMark(event)
-            count++
-    }
-
+    
     const position=(event)=>{
         if(!callAgain){
             if(Ai.getMode()){
                 marked.X.push(event.target.dataset.index)
                 Ai.setAiSpot()
                 marked.O.push(Ai.getAiSpot())
-            }else if(!Ai.getMode() && (count % 2 === 0)){
-                marked.X.push(event.target.dataset.index)
             }else if(!Ai.getMode() && (count % 2 !== 0)){
+                marked.X.push(event.target.dataset.index)
+            }else if(!Ai.getMode() && (count % 2 === 0)){
                 marked.O.push(event.target.dataset.index)
             }
         } else if(callAgain){
@@ -73,6 +55,20 @@ const GameBoard = (()=>{
         }
         
     }
+    const getMarkedSpots=()=> marked
+    const resetMarkedSpots=()=> {
+        for(prop in marked){
+            marked[prop] = []
+        }
+    }
+    const getGameBoardSpots =()=> gameBoard
+    const setWinner=(num)=> winner = num
+    const getWinner=()=> winner
+    const setCount=(num)=> count = num
+    const setGameBoardSpots = (spot)=>{
+        for(let i=0; i < gameBoard.length; i++){gameBoard[i] = spot}
+    }
+
     function checkWinner(){
         for(const prop in marked){
             let spots = marked[prop].sort()
@@ -101,25 +97,28 @@ const GameBoard = (()=>{
         return winner;
         
     }
- 
-    const setWinner=(num)=> winner = num
-    const getWinner=()=> winner
-    const setCount=(num)=> count = num
-    const setGameBoardSpots = (spot)=>{
-        for(let i=0; i < gameBoard.length; i++){gameBoard[i] = spot}
+    function getPlayerMark(event){
+        position(event)
+        checkWinner()
+        callAgain = 1;
+        if(count % 2 !== 0){
+            firstPlayer.setPlayerMark(event)
+            count++
+        } else if(count % 2 === 0){
+            secondPlayer.setPlayerMark(event)
+            count++
+        } 
+       
     }
-    const getMarkedSpots=()=> marked
-    const resetMarkedSpots=()=> {
-        for(prop in marked){
-            marked[prop] = []
-        }
+
+    function getAiMark(event){
+            Ai.setAIMark(event)
+            count++
     }
-    const getGameBoardSpots =()=> gameBoard
-   
+
+
     renderContents()
     clickEvent()
-   console.log(position.get)
-
     return  {
                 getGameBoardSpots, setGameBoardSpots, gameDisplay,setCount, getMarkedSpots,
                 renderContents, setWinner,getWinner,resetMarkedSpots, position, checkWinner, marked,
@@ -128,7 +127,6 @@ const GameBoard = (()=>{
 
 const Player = (mark)=>{
     let playerMark = mark
-
     const setPlayerMark = (event) =>{
         while(GameBoard.gameDisplay.firstChild){
             GameBoard.gameDisplay.removeChild(GameBoard.gameDisplay.firstChild)
@@ -136,14 +134,11 @@ const Player = (mark)=>{
         GameBoard.getGameBoardSpots()[event.target.dataset.index] = mark
     }
 
-   
-
     return{setPlayerMark, playerMark}
 
 }
-
-
-
+const firstPlayer = Player("X")
+const secondPlayer = Player("O")
 
 const Game = (()=>{
     const notification = document.querySelector("#notify")
@@ -192,10 +187,6 @@ const Game = (()=>{
     return {announceWinner}
 })()
 
-
-
-const firstPlayer = Player("X")
-const secondPlayer = Player("O")
 
 const Ai = (()=>{
     const ai = document.querySelector(".ai")

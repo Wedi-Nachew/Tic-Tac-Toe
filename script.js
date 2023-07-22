@@ -232,24 +232,14 @@ const GameMode= (()=>{
     const setAiMode = ()=> mode = "ai"
     const getAiMode=()=> mode
     const clickEvents = ()=> {
-        computerMode.addEventListener("click", ()=>{
-            setAiMode()
-        })
-
+        computerMode.addEventListener("click", ()=>{setAiMode()})
+        twoPlayersMode.addEventListener("click", (event)=>mode = 0)
         welcome.addEventListener("click", (event)=>{
-            if(event.target.nodeName === "BUTTON"){
+            if(event.target.nodeName === "BUTTON" || event.target.parentNode.nodeName == "svg"){
                welcome.classList = "hide"
             }
         })
-
-        icons.forEach(icon => icon.addEventListener("click", (event)=>{
-            console.log(event.target.parentNode)
-        }))
-
-        twoPlayersMode.addEventListener("click", ()=> mode = 0)
     }
-
-
     clickEvents()
     return {getAiMode, welcome}
 })()

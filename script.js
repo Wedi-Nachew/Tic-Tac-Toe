@@ -135,7 +135,6 @@ const Player = (mark)=>{
     }
 
     return{setPlayerMark, playerMark}
-
 }
 const firstPlayer = Player("X")
 const secondPlayer = Player("O")
@@ -143,7 +142,7 @@ const secondPlayer = Player("O")
 const Game = (()=>{
     const notification = document.querySelector("#notify")
     const winnerMark = notification.querySelector("h1")
-    const restart = document.querySelector("#notify ~ button")
+    const restart = document.querySelector(".Btns > button")
 
     const announceWinner = (won)=>{
         if(!won){

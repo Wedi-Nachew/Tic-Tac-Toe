@@ -83,7 +83,7 @@ svg{
     height: auto;
     margin-bottom: 20px;
     padding: 0;
-    row-gap: 20px;
+    row-gap: 10px;
 }
 .game h1{
     font-size: 3.3rem;
@@ -92,14 +92,14 @@ svg{
 }
 .game-board{
     display: grid;
-    grid-template-columns: repeat(3, 130px);
+    grid-template-columns: repeat(3, 120px);
     border: none;
     box-shadow: 0 0 10px #001e03;
-    margin-bottom: 20px;;
+    margin-bottom: 10px;
 }
 .game-board > div{
-    height: 130px;
-    width: 130px;
+    height: 120px;
+    width: 120px;
 }
 .game-board > div:nth-child(-n + 6){
     border-bottom: 9px solid rgb(243, 242, 242)
@@ -149,22 +149,35 @@ svg{
 .hide{
     visibility: hidden;
 }
-
-.game button {
+.game button{
     width: 25%;
-    font-size: 1.6rem;
     font-weight: 600;
     border-radius: 15px;
+    font-size: 1.2rem;
     border: none;
     box-shadow: 0 0 5px rgb(0, 18, 25);
     cursor: pointer;
-    background-color: #ff7900;
+    background-color:  #ffb700;
     color: #001e03;
     height: 50px;
     box-shadow: 0 0 5px rgb(52, 52, 52);
+    margin-bottom: 10px;
 }
-.game-board ~ button{
+
+.game button:hover{
     background-color: #ff7900;
+    box-shadow: 0 0 15px #2a1702;
+}
+.Btns{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+}
+.Btns button{
+    background-color:  #ffb700;
     color: #001e03;
     height: 50px;
     width: 20%;

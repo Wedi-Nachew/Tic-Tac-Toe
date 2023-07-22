@@ -227,6 +227,7 @@ const GameMode= (()=>{
     const welcome = document.querySelector("#welcome")
     const computerMode = welcome.querySelector(".AI")
     const twoPlayersMode = welcome.querySelector("button:last-child")
+    const icons = welcome.querySelectorAll("svg")
     let mode = 0
     const setAiMode = ()=> mode = "ai"
     const getAiMode=()=> mode
@@ -241,8 +242,11 @@ const GameMode= (()=>{
             }
         })
 
+        icons.forEach(icon => icon.addEventListener("click", (event)=>{
+            console.log(event.target.parentNode)
+        }))
+
         twoPlayersMode.addEventListener("click", ()=> mode = 0)
-        
     }
 
 

@@ -143,6 +143,7 @@ const Game = (()=>{
     const notification = document.querySelector("#notify")
     const winnerMark = notification.querySelector("h1")
     const restart = document.querySelector(".Btns > button")
+    const mainMenu = document.querySelector(".Btns button:last-child")
 
     const announceWinner = (won)=>{
         if(!won){
@@ -153,21 +154,25 @@ const Game = (()=>{
         }
     }
     const clickEvents = (event)=>{
-
         notification.addEventListener("click", (event)=>{
-            if(event.target.nodeName == "BUTTON"){
+            if(event.target.textContent == "Play Again"){
                 replay()
                 notification.className = "hide"
-            } else {
+            }else if(event.target.textContent == "Main Menu"){
+                GameMode.welcome.className = "show"
+            }else {
                 notification.className = "hide"
                 restart.textContent = "Play Again"
             }
+            notification.className = "hide"
         })
         
         restart.addEventListener("click", (event)=>{
             event.target.textContent = "Restart"
             replay()
         })
+
+        mainMenu.addEventListener("click", ()=> GameMode.welcome.className = "show")
     }
     function replay(){
         while(GameBoard.gameDisplay.firstChild){
@@ -205,7 +210,6 @@ const Ai = (()=>{
         AiSpot = allPossibleSpots[~~(Math.random() * allPossibleSpots.length)]
     }
     const getAiSpot=()=> AiSpot
-
     const setAIMark=(event)=>{
         if(GameBoard.checkWinner()){
             return
@@ -220,9 +224,8 @@ const Ai = (()=>{
 })()
 
 const GameMode= (()=>{
-    const computerMode = document.querySelector(".AI")
-    const welcome= document.querySelector(".welcome")
-    console.log(welcome)
+    const welcome = document.querySelector("#welcome")
+    const computerMode = welcome.querySelector(".AI")
     let mode = 0
     const setAiMode = ()=> mode = "ai"
     const getAiMode=()=> mode
@@ -231,14 +234,15 @@ const GameMode= (()=>{
             setAiMode()
         })
         welcome.addEventListener("click", (event)=>{
-            if(event.target.nodeName==="BUTTON"){
+            if(event.target.nodeName === "BUTTON"){
                welcome.classList = "hide"
             }
         })
+        
     }
 
 
     clickEvents()
-    return {getAiMode}
+    return {getAiMode, welcome}
 })()
 

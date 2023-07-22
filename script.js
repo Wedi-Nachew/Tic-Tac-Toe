@@ -142,13 +142,19 @@ const secondPlayer = Player("O")
 const Game = (()=>{
     const notification = document.querySelector("#notify")
     const winnerMark = notification.querySelector("h1")
+    const text = notification.querySelector("h2")
     const restart = document.querySelector(".Btns > button")
     const mainMenu = document.querySelector(".Btns button:last-child")
 
     const announceWinner = (won)=>{
         if(!won){
             notification.className = "hide"
-        }else{
+        }else if(won == "tie"){
+            text.style.display = "none"
+            winnerMark.style.cssText = "margin-bottom: 100px"
+            winnerMark.textContent  = `It's a ${won}`
+            notification.className = "show"
+        }else if(won){
             winnerMark.textContent  = won
             notification.className = "show"
         }
@@ -232,8 +238,11 @@ const GameMode= (()=>{
     const setAiMode = ()=> mode = "ai"
     const getAiMode=()=> mode
     const clickEvents = ()=> {
-        computerMode.addEventListener("click", ()=>{setAiMode()})
+
+        computerMode.addEventListener("click", ()=>setAiMode())
+
         twoPlayersMode.addEventListener("click", (event)=>mode = 0)
+
         welcome.addEventListener("click", (event)=>{
             if(event.target.nodeName === "BUTTON" || event.target.parentNode.nodeName == "svg"){
                welcome.classList = "hide"

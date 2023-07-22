@@ -226,6 +226,7 @@ const Ai = (()=>{
 const GameMode= (()=>{
     const welcome = document.querySelector("#welcome")
     const computerMode = welcome.querySelector(".AI")
+    const twoPlayersMode = welcome.querySelector("button:last-child")
     let mode = 0
     const setAiMode = ()=> mode = "ai"
     const getAiMode=()=> mode
@@ -233,11 +234,14 @@ const GameMode= (()=>{
         computerMode.addEventListener("click", ()=>{
             setAiMode()
         })
+
         welcome.addEventListener("click", (event)=>{
             if(event.target.nodeName === "BUTTON"){
                welcome.classList = "hide"
             }
         })
+
+        twoPlayersMode.addEventListener("click", ()=> mode = 0)
         
     }
 

@@ -19,14 +19,14 @@ const GameBoard = (()=>{
     }
     const clickEvent = ()=>{ 
         gameDisplay.addEventListener("click", (event)=>{
-            if(Ai.getMode() && !winner){
+            if(GameMode.getAiMode() && !winner){
                 getPlayerMark(event)
                 getAiMark(event)
                 renderContents()
                 position(event)
                 checkWinner()
                 Game.announceWinner(winner)
-            }else if(!gameBoard[event.target.dataset.index] && !winner && !Ai.getMode()){
+            }else if(!gameBoard[event.target.dataset.index] && !winner && !GameMode.getAiMode()){
                 getPlayerMark(event)
                 renderContents()
                 position(event)
@@ -40,13 +40,13 @@ const GameBoard = (()=>{
     
     const position=(event)=>{
         if(!callAgain){
-            if(Ai.getMode()){
+            if(GameMode.getAiMode()){
                 marked.X.push(event.target.dataset.index)
                 Ai.setAiSpot()
                 marked.O.push(Ai.getAiSpot())
-            }else if(!Ai.getMode() && (count % 2 !== 0)){
+            }else if(!GameMode.getAiMode() && (count % 2 !== 0)){
                 marked.X.push(event.target.dataset.index)
-            }else if(!Ai.getMode() && (count % 2 === 0)){
+            }else if(!GameMode.getAiMode() && (count % 2 === 0)){
                 marked.O.push(event.target.dataset.index)
             }
         } else if(callAgain){
@@ -189,8 +189,6 @@ const Game = (()=>{
 
 
 const Ai = (()=>{
-    const ai = document.querySelector(".ai")
-    let mode = 0;
     let AiSpot = ""
     const setAiSpot=()=> {
         const allPossibleSpots=[0,1,2,3,4,5,6,7,8]
@@ -208,13 +206,6 @@ const Ai = (()=>{
         AiSpot = allPossibleSpots[~~(Math.random() * allPossibleSpots.length)]
     }
     const getAiSpot=()=> AiSpot
-    const getMode =()=> mode
-    const setAimode = ()=> mode = "ai"
-
-    const clickEvent= ()=>{
-        ai.addEventListener("click", ()=>{
-            setAimode()
-    })} 
 
     const setAIMark=(event)=>{
         if(GameBoard.checkWinner()){
@@ -226,9 +217,29 @@ const Ai = (()=>{
             GameBoard.getGameBoardSpots()[getAiSpot()] = "O"
         }
     }
-
-    clickEvent()
-    return{setAIMark, getMode, setAiSpot, getAiSpot}
+    return{setAIMark, setAiSpot, getAiSpot}
 })()
 
+const GameMode= (()=>{
+    const computerMode = document.querySelector(".AI")
+    const welcome= document.querySelector(".welcome")
+    console.log(welcome)
+    let mode = 0
+    const setAiMode = ()=> mode = "ai"
+    const getAiMode=()=> mode
+    const clickEvents = ()=> {
+        computerMode.addEventListener("click", ()=>{
+            setAiMode()
+        })
+        welcome.addEventListener("click", (event)=>{
+            if(event.target.nodeName==="BUTTON"){
+               welcome.classList = "hide"
+            }
+        })
+    }
+
+
+    clickEvents()
+    return {getAiMode}
+})()
 

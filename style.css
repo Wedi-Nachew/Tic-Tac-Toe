@@ -20,7 +20,7 @@
 body{
     font-family: 'Lora', serif;
     background-color: #001e03;
-    margin: 0;
+    margin: -150px 0 0 0;
     padding: 0;
 }
 
@@ -88,7 +88,7 @@ svg{
 .game h1{
     font-size: 3.3rem;
     color: #fff;
-    margin-top: -150px;
+    margin-top: -5px;
 }
 .game-board{
     display: grid;

@@ -17,8 +17,68 @@
 :root{
     position: relative;
 }
+body{
+    padding: 0;
+    margin: 0;
+}
 
-body {
+.welcome {
+    font-family: 'Lora', serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: #001e03;
+    color: white;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.welcome h1{
+    font-size: 4.5rem;
+    margin-top: 0;
+}
+
+
+
+.welcome button{
+    width: 25%;
+    height: 15%;
+    background-color:  #ffb700; 
+    border: none;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.welocme button:last-child{
+    margin-bottom: 0;
+}
+.welcome button:hover{
+    background-color: #ff7900;
+    box-shadow: 0 0 15px #2a1702;
+}
+svg{
+    fill: #000;
+    height: 50px;
+}
+
+
+
+
+.game{
     font-family: 'Lora', serif;
     display: flex;
     align-items: center;
@@ -26,8 +86,10 @@ body {
     box-sizing: border-box;
     row-gap: 20px;
     background-color: #001e03;
+    margin: 0;
+    padding: 0;
 }
-h1{
+.game h1{
     font-size: 3.3rem;
     color: #fff;
     margin: 10px  auto 20px auto;
@@ -93,7 +155,7 @@ h1{
     visibility: hidden;
 }
 
-button {
+.game button {
     width: 25%;
     height: 10%;
     font-size: 1.6rem;
